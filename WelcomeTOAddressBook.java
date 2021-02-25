@@ -1,223 +1,46 @@
-package day6Assignment.addressBookSystem;
+public class EmpWageMultiCompanies {
 
-import java.util.Scanner;
-
-public class AddressBookProgramUC4 {
+	public static  final int IS_PART_TIME = 1;
+	public static  final int IS_FULL_TIME = 2;
 	
-	private String first;
-    private String last;
-    private String address;
-    private String city;
-    private String state;
-    private String phoneNumber;
-    private String email;
-    
-    public AddressBookProgramUC4(String first, String last, String address, String city, String state, String phoneNumber, String email) {
-        
-    	this.first = first;
-        this.last = last;
-        this.address = address;
-        this.city = city;
-        this.state = state;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-    
-    }
-    
-    
-    AddressBookProgramUC4() {
-        
-    	first = "";
-        last = "";
-        address = "";
-        city = "";
-        state = "";
-        phoneNumber = "";
-        email = "";
-   
-    }
+	public static int calcEmpWageForCompany(String company, int empRate, int numOfDays, int maxHrs) {
 	
-	public void readEntry(){
-        
-		System.out.println("First Name:" + first );
-        System.out.println("Last Name:" + last );
-        System.out.println("Address:" + address );
-        System.out.println("City:" + city );
-        System.out.println("State:" + state );
-        System.out.println("PhoneNumber:" + phoneNumber );
-        System.out.println("Email:" + email );
-    
-	}
+		 int empHrs = 0, totalEmpHrs = 0, totalWorkingDays = 0;
+		 
+		 while (totalEmpHrs <= maxHrs && totalWorkingDays < numOfDays) {
+			 
+			 totalWorkingDays++;
+			 
+			 int empCheck = (int) Math.floor(Math.random() * 10) % 3;
+			 
+			 switch (empCheck) {
+			 	case IS_PART_TIME: 
+			 		empHrs = 4;
+			 		break;
+			 	case IS_FULL_TIME: 
+			 		empHrs = 8;
+			 		break;
+			 	default:
+			 		empHrs = 0;
+			 
+			 }
+			 
+			 totalEmpHrs += empHrs;
+			 System.out.println("Day: " + totalWorkingDays + "Emp Hr: " + empHrs);
+			 
+		 }
+		 
+		 int totalEmpWage = totalEmpHrs * empRate;
+		 System.out.println("Total Emp Wage for Company: " + company + " is: " + totalEmpWage);
+		 
+		 return totalEmpWage;
+	}  
 	
-	//Keeps track of how many entries are in the book
-	
-	private int entries = 0;
-	 
-	AddressBookProgramUC4[] contents;
-	
-	public void initEntries(int e){
-        
-		contents = new AddressBookProgramUC4[e];
-        
-		for (int i = 0; i < contents.length; i++) {      //Initializes an array of entries, then loops through to initialize each individual entry
-        
-			contents[i] = new AddressBookProgramUC4();
-        
-		}
+	public static void main(String[] args) {
+		
+		calcEmpWageForCompany("DMart", 20, 2, 10);
+		calcEmpWageForCompany("Reliance", 20, 2, 10);
 		
 	}
 	
-	//Adds an entry to the book
-	public void add(String first, String last, String address, String city, String state, String phoneNumber, String email){
-        
-		if (entries<contents.length){
-        
-			contents[entries] = new AddressBookProgramUC4(first, last, address, city, state, phoneNumber, email);
-        
-			entries++;
-        
-		}
-		else System.out.println("Error: book is full");
-    }
-	
-	 //Removes an entry from the book
-    public void remove(int entry){
-        
-    	if (entries>0){
-            
-    		contents[entry] = new AddressBookProgramUC4();
-            
-    		for (int i = 0; i < entries - entry; i++){
-                
-    			if (entry + 1 == entries) contents[entry] = new AddressBookProgramUC4();
-                
-    			else{
-                
-    				AddressBookProgramUC4 temp = contents[entry + i];
-    				contents[entry + i] = contents[entry + i + 1]; //Removes an entry end moves each entry after it one backwards.
-                    contents[entry+i+1] = temp;
-                    break;
-                }
-            }
-            entries--;
-        }
-        else System.out.println("Error: book is empty.");
-    }
-    
-    //Changes the values of an entry
-    public void edit(String first, String last, String address, String city, String state, String phoneNumber, String email, int selection){
-       
-    	contents[selection].first = first;
-        contents[selection].last = last;
-        contents[selection].address = address;
-        contents[selection].email = city;
-        contents[selection].email = state;
-        contents[selection].email = phoneNumber;
-        contents[selection].email = email;
-        
-    }
-	
-	public static void main(String[] args) { 							//Main method()
-		
-		AddressBookProgramUC4 abp = new AddressBookProgramUC4();
-		
-		Scanner s = new Scanner(System.in);
-		
-		int howManyEntries;
-		
-		System.out.print("How many entries in book");
-	
-		howManyEntries = s.nextInt();
-	    
-	    if (howManyEntries > 0) {
-	        
-	    	abp.initEntries(howManyEntries);                 //This code decides how many entries are in each book in the library
-	        
-	    }
-	    else System.out.println("You must create at least 1 Entry.");
-    	
-	    boolean done = false;
-        int selection;
-        
-        while (done == false){
-
-            for ( int i = 0; i < abp.contents.length; i++ ) {
-                
-            	System.out.println("===========Entry " + i + " ===========");
-                abp.contents[i].readEntry(); //Accessing the array of entries INSIDE the array of books/the library
-                System.out.println("================================");
-            
-            }
-         
-            System.out.println("Select an option!");
-            System.out.println("1. Add an entry");
-            System.out.println("2. Remove an entry");
-            System.out.println("3. Edit an entry");
-            System.out.println("4. Exit the menu");
-            System.out.print("> ");
-            
-            selection = s.nextInt();
-            String first, last, address, city, state, phoneNumber, email;
-            
-            switch(selection){
-            case 1: 
-                System.out.print("First name? ");
-                first = s.next();
-                System.out.print("Last name? ");
-                last = s.next();
-                System.out.print("Address? ");
-                address = s.next();
-                System.out.print("City? ");
-                city = s.next();
-                System.out.print("State? ");
-                state = s.next();
-                System.out.print("PhoneNumber? ");
-                phoneNumber = s.next();
-                System.out.print("Email? ");
-                email = s.next();
-                
-                abp.add(first, last, address, city, state, phoneNumber, email);
-                break;
-                
-            case 2: 
-                System.out.print("Remove which entry? ");
-                int entry = s.nextInt();
-                abp.remove(entry);
-                break;
-                
-            case 3:
-                System.out.print("Edit which entry?");
-                int whichEntry = s.nextInt();
-                System.out.print("First name? ");
-                first = s.next();
-                System.out.print("Last name? ");
-                last = s.next();
-                System.out.print("Address? ");
-                address = s.next();
-                System.out.print("City? ");
-                city = s.next();
-                System.out.print("State? ");
-                state = s.next();
-                System.out.print("PhoneNumber? ");
-                phoneNumber = s.next();
-                System.out.print("Email? ");
-                email = s.next();
-                abp.edit(first, last, address, email, city, state, phoneNumber, whichEntry);
-                break;
-                
-            case 4:
-                done = true;
-                break;
-            
-            default:
-                System.out.print("Please choose a valid menu number\n");
-                
-            }
-            
-        }
-     
-        s.close();
-        
-	}
-
 }

@@ -2,7 +2,7 @@ package day6Assignment.addressBookSystem;
 
 import java.util.Scanner;
 
-public class AddressBookProgramUC2 {
+public class AddressBookProgramUC4 {
 	
 	private String first;
     private String last;
@@ -12,7 +12,7 @@ public class AddressBookProgramUC2 {
     private String phoneNumber;
     private String email;
     
-    public AddressBookProgramUC2(String first, String last, String address, String city, String state, String phoneNumber, String email) {
+    public AddressBookProgramUC4(String first, String last, String address, String city, String state, String phoneNumber, String email) {
         
     	this.first = first;
         this.last = last;
@@ -24,7 +24,8 @@ public class AddressBookProgramUC2 {
     
     }
     
-    public AddressBookProgramUC2() {
+    
+    AddressBookProgramUC4() {
         
     	first = "";
         last = "";
@@ -33,7 +34,6 @@ public class AddressBookProgramUC2 {
         state = "";
         phoneNumber = "";
         email = "";
-        
    
     }
 	
@@ -50,30 +50,29 @@ public class AddressBookProgramUC2 {
 	}
 	
 	//Keeps track of how many entries are in the book
-		 
-	AddressBookProgramUC3[] contents;
+	
+	private int entries = 0;
+	 
+	AddressBookProgramUC4[] contents;
 	
 	public void initEntries(int e){
         
-		contents = new AddressBookProgramUC3[e];
+		contents = new AddressBookProgramUC4[e];
         
 		for (int i = 0; i < contents.length; i++) {      //Initializes an array of entries, then loops through to initialize each individual entry
         
-			contents[i] = new AddressBookProgramUC3();
+			contents[i] = new AddressBookProgramUC4();
         
 		}
 		
 	}
-		
+	
 	//Adds an entry to the book
-	
-	private int entries = 0;
-	
 	public void add(String first, String last, String address, String city, String state, String phoneNumber, String email){
         
 		if (entries<contents.length){
         
-			contents[entries] = new AddressBookProgramUC3(first, last, address, city, state, phoneNumber, email);
+			contents[entries] = new AddressBookProgramUC4(first, last, address, city, state, phoneNumber, email);
         
 			entries++;
         
@@ -81,9 +80,46 @@ public class AddressBookProgramUC2 {
 		else System.out.println("Error: book is full");
     }
 	
-	public static void main(String[] args) {					//Main method()
+	 //Removes an entry from the book
+    public void remove(int entry){
+        
+    	if (entries>0){
+            
+    		contents[entry] = new AddressBookProgramUC4();
+            
+    		for (int i = 0; i < entries - entry; i++){
+                
+    			if (entry + 1 == entries) contents[entry] = new AddressBookProgramUC4();
+                
+    			else{
+                
+    				AddressBookProgramUC4 temp = contents[entry + i];
+    				contents[entry + i] = contents[entry + i + 1]; //Removes an entry end moves each entry after it one backwards.
+                    contents[entry+i+1] = temp;
+                    break;
+                }
+            }
+            entries--;
+        }
+        else System.out.println("Error: book is empty.");
+    }
+    
+    //Changes the values of an entry
+    public void edit(String first, String last, String address, String city, String state, String phoneNumber, String email, int selection){
+       
+    	contents[selection].first = first;
+        contents[selection].last = last;
+        contents[selection].address = address;
+        contents[selection].email = city;
+        contents[selection].email = state;
+        contents[selection].email = phoneNumber;
+        contents[selection].email = email;
+        
+    }
+	
+	public static void main(String[] args) { 							//Main method()
 		
-		AddressBookProgramUC3 abp = new AddressBookProgramUC3();
+		AddressBookProgramUC4 abp = new AddressBookProgramUC4();
 		
 		Scanner s = new Scanner(System.in);
 		
@@ -99,11 +135,11 @@ public class AddressBookProgramUC2 {
 	        
 	    }
 	    else System.out.println("You must create at least 1 Entry.");
-	    
+    	
 	    boolean done = false;
         int selection;
-	    
-	    while (done == false){
+        
+        while (done == false){
 
             for ( int i = 0; i < abp.contents.length; i++ ) {
                 
@@ -115,7 +151,9 @@ public class AddressBookProgramUC2 {
          
             System.out.println("Select an option!");
             System.out.println("1. Add an entry");
-            System.out.println("2. Exit the menu");
+            System.out.println("2. Remove an entry");
+            System.out.println("3. Edit an entry");
+            System.out.println("4. Exit the menu");
             System.out.print("> ");
             
             selection = s.nextInt();
@@ -141,7 +179,33 @@ public class AddressBookProgramUC2 {
                 abp.add(first, last, address, city, state, phoneNumber, email);
                 break;
                 
-            case 2:
+            case 2: 
+                System.out.print("Remove which entry? ");
+                int entry = s.nextInt();
+                abp.remove(entry);
+                break;
+                
+            case 3:
+                System.out.print("Edit which entry?");
+                int whichEntry = s.nextInt();
+                System.out.print("First name? ");
+                first = s.next();
+                System.out.print("Last name? ");
+                last = s.next();
+                System.out.print("Address? ");
+                address = s.next();
+                System.out.print("City? ");
+                city = s.next();
+                System.out.print("State? ");
+                state = s.next();
+                System.out.print("PhoneNumber? ");
+                phoneNumber = s.next();
+                System.out.print("Email? ");
+                email = s.next();
+                abp.edit(first, last, address, email, city, state, phoneNumber, whichEntry);
+                break;
+                
+            case 4:
                 done = true;
                 break;
             
@@ -150,9 +214,10 @@ public class AddressBookProgramUC2 {
                 
             }
             
-	    }
-	    
-	    s.close();
+        }
+     
+        s.close();
+        
 	}
 
 }

@@ -3,8 +3,8 @@ package day6Assignment.addressBookSystem;
 import java.util.Scanner;
 
 public class AddressBookProgramUC1 {
-	
-	private String first;
+
+    private String first;
     private String last;
     private String address;
     private String city;
